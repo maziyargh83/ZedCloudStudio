@@ -1,0 +1,19 @@
+{
+  "name": "@z-cloud/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@stylexjs/stylex": "^0.19.2"
+  },
+  "exports": {
+    ".": "./colors.stylex.ts",
+    "./colors.stylex": "./colors.stylex.ts",
+    "./constants.stylex": "./constants.stylex.ts",
+    "./themes/light": "./themes/light.ts"
+  }
+}

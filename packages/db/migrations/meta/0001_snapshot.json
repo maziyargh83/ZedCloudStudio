@@ -1,0 +1,176 @@
+{
+  "id": "6e045993-e453-48af-9cf0-7e81e68c9891",
+  "prevId": "41746dc9-c574-401d-b289-854eec1ed81e",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.assets": {
+      "name": "assets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "filename": {
+          "name": "filename",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "media_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mime": {
+          "name": "mime",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "size": {
+          "name": "size",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_path": {
+          "name": "source_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "captured_at": {
+          "name": "captured_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tags": {
+          "name": "tags",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "favorite": {
+          "name": "favorite",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "collection_name": {
+          "name": "collection_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "custom_metadata": {
+          "name": "custom_metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "destination_id": {
+          "name": "destination_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "object_key": {
+          "name": "object_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.media_type": {
+      "name": "media_type",
+      "schema": "public",
+      "values": [
+        "photo",
+        "video",
+        "audio"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

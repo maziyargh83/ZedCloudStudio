@@ -1,0 +1,29 @@
+{
+  "name": "@z-cloud/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "test": "tsx --test src/local.test.ts"
+  },
+  "dependencies": {
+    "@z-cloud/contracts": "workspace:*",
+    "drizzle-orm": "^0.44.0",
+    "postgres": "^3.4.7",
+    "proper-lockfile": "^4.1.2",
+    "zod": "^4.6.7"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./local": "./src/local.ts"
+  },
+  "devDependencies": {
+    "@types/proper-lockfile": "^4.1.4",
+    "drizzle-kit": "^0.31.0"
+  }
+}

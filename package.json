@@ -1,0 +1,36 @@
+{
+  "name": "z-cloud",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "volta": {
+    "node": "22.23.2"
+  },
+  "scripts": {
+    "dev": "turbo run dev --filter=@z-cloud/web --filter=@z-cloud/api",
+    "dev:web": "pnpm --filter @z-cloud/web dev",
+    "dev:api": "pnpm --filter @z-cloud/api dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "pnpm --filter @z-cloud/web test:e2e",
+    "db:generate": "pnpm --filter @z-cloud/db generate",
+    "db:migrate": "pnpm --filter @z-cloud/db migrate",
+    "import:local": "pnpm --filter @z-cloud/local-importer index",
+    "format": "prettier --write .",
+    "mcp": "pnpm --filter @z-cloud/mcp start",
+    "mcp:build": "pnpm --filter @z-cloud/mcp build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "turbo": "^2.6.0",
+    "typescript": "~5.9.3",
+    "esbuild": "^0.25.12",
+    "prettier": "^3.6.0"
+  }
+}

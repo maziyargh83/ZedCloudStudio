@@ -1,0 +1,14 @@
+{
+  "name": "@z-cloud/local-importer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "index": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@z-cloud/contracts": "workspace:*"
+  }
+}

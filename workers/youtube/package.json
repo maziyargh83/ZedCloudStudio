@@ -1,0 +1,19 @@
+{
+  "name": "@z-cloud/youtube-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@z-cloud/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0",
+    "@cloudflare/workers-types": "^5.20261113.1"
+  }
+}

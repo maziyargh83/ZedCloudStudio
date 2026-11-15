@@ -1,0 +1,27 @@
+import * as stylex from '@stylexjs/stylex';
+
+export const colors = stylex.defineVars({
+  canvas: '#111315',
+  sidebar: '#15181A',
+  surface: '#1C1F22',
+  surfaceAlt: '#25292D',
+  elevated: '#303438',
+  hover: '#383D42',
+  border: '#30363A',
+  borderStrong: '#626A70',
+  text: '#ECEEEA',
+  secondary: '#ABB2AF',
+  muted: '#87918D',
+  inverse: '#111315',
+  accent: '#D6A45B',
+  accentHover: '#E1B777',
+  accentSubtle: '#393022',
+  accentText: '#111315',
+  success: '#75C6A3',
+  warning: '#E8BD72',
+  danger: '#ED918C',
+  info: '#90B8DF',
+  overlay: 'rgba(0,0,0,0.7)',
+  mediaText: '#FFFFFF',
+  mediaScrim: 'rgba(0,0,0,0.55)',
+});
