@@ -46,7 +46,9 @@ export const nav = [
   { path: '/library', label: 'Media library', icon: LibraryBig },
   { path: '/imports', label: 'Import queue', icon: Upload },
   { path: '/servers', label: 'Storage servers', icon: Server },
-  { path: '/adventures', label: 'Adventures', icon: Compass },
+  { path: '/reviews', label: 'Review inbox', icon: Sparkles },
+  { path: '/adventures', label: 'Adventure wiki', icon: Compass },
+  { path: '/map', label: 'Travel atlas', icon: Compass },
   { path: '/memories', label: 'Memories', icon: BookOpen },
   { path: '/ai', label: 'AI workspace', icon: Sparkles },
   { path: '/planner', label: 'Content planner', icon: CalendarDays },
@@ -360,7 +362,7 @@ export function StudioShell() {
               <span {...stylex.attrs(shell.liveDot)} />
               Local workspace
             </span>
-            <Badge tone="accent">DEMO + LOCAL</Badge>
+            <Badge tone="accent">PERSONAL LIBRARY</Badge>
             <div {...stylex.attrs(shell.topDivider)} />
             <IconButton
               label={s.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}

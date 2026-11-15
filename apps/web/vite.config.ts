@@ -12,6 +12,18 @@ export default defineConfig({
     }),
     solid(),
   ],
-  server: { port: 5173, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:8787', rewrite: path => path.replace(/^\/api/, '') } } },
-  preview: { proxy: { '/api': { target: 'http://127.0.0.1:8787', rewrite: path => path.replace(/^\/api/, '') } } },
+  server: {
+    port: 4878,
+    strictPort: true,
+    proxy: {
+      '/api': { target: 'http://127.0.0.1:4877', rewrite: (path) => path.replace(/^\/api/, '') },
+    },
+  },
+  preview: {
+    port: 4879,
+    strictPort: true,
+    proxy: {
+      '/api': { target: 'http://127.0.0.1:4877', rewrite: (path) => path.replace(/^\/api/, '') },
+    },
+  },
 });

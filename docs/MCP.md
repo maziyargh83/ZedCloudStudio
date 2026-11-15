@@ -36,7 +36,7 @@ By default, API and MCP read and write `<repository>/.data/library.json`, indepe
 
 `ZCLOUD_DATA_FILE` overrides this location; use an absolute path. With `DATABASE_URL`, both services use the existing Drizzle/PostgreSQL adapter instead. Both load the root `.env` without copying database credentials into host configs.
 
-Files sent through the new managed import queue upload their originals and metadata through the API to a selected local/S3 destination, then appear in the shared catalog. Existing browser-only media, memories, drafts and demo fixtures remain separate and are not automatically migrated. Metadata-only MCP indexing still does not copy, upload, transcode or publish an original. See `UPLOADS.md`. Indexing uses filesystem modification time rather than claiming extracted capture metadata. AI and YouTube integrations remain unconfigured.
+Files sent through the new managed import queue upload their originals and metadata through the API to a selected local/S3 destination, then appear in the shared catalog. Existing browser-only media, memories, drafts and demo fixtures remain separate and are not automatically migrated. Metadata-only MCP indexing still does not copy, upload, transcode or publish an original. See `UPLOADS.md`. Indexing uses filesystem modification time rather than claiming extracted capture metadata. Liara text generation is available through the web/API workspace; MCP tools do not generate AI responses. YouTube remains unconfigured. See `AI.md`.
 
 ## Verification on 2026-11-15
 

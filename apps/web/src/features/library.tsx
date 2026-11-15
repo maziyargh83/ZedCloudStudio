@@ -116,43 +116,6 @@ export function Library() {
           Import media
         </Button>
       </div>
-      <Show when={!collection() && !favorites() && !recent()}>
-        <section {...stylex.attrs(lib.featured)} aria-label="Featured collection">
-          <img
-            src={s.assets.find((a) => a.collection === 'alpine')?.src}
-            alt="Featured collection cover"
-            {...stylex.attrs(lib.heroImage)}
-          />
-          <div {...stylex.attrs(lib.heroScrim)} />
-          <div {...stylex.attrs(lib.heroContent)}>
-            <div {...stylex.attrs(lib.heroEyebrow)}>
-              <Folder size={11} />
-              FEATURED COLLECTION<span {...stylex.attrs(lib.heroDemo)}>DEMO</span>
-            </div>
-            <h2 {...stylex.attrs(lib.heroTitle)}>Alpine escape</h2>
-            <p {...stylex.attrs(lib.heroDescription)}>A little further from everything.</p>
-            <button
-              onClick={() =>
-                void navigate({
-                  to: '/collections/$collectionId',
-                  params: { collectionId: 'alpine' },
-                })
-              }
-              {...stylex.attrs(lib.heroLink)}
-            >
-              Explore collection <ArrowUpRight size={14} />
-            </button>
-          </div>
-          <div {...stylex.attrs(lib.heroBottom)}>
-            <span>OCTOBER 21—24, 2026</span>
-            <span>
-              {s.assets.filter((a) => a.collection === 'alpine').length} photographs{' '}
-              <span {...stylex.attrs(lib.heroDot)}>·</span> A story in the making
-            </span>
-          </div>
-          <span {...stylex.attrs(lib.heroIndex)}>01 / 03</span>
-        </section>
-      </Show>
       <div {...stylex.attrs(lib.controls)}>
         <div {...stylex.attrs(lib.typeTabs)} role="group" aria-label="Media type">
           <For
@@ -246,8 +209,8 @@ export function Library() {
       </Show>
       <Show when={s.files.isError}>
         <div role="alert" {...stylex.attrs(lib.errorBanner)}>
-          Browser storage is unavailable. Sample media is still available; imported files cannot be
-          restored.
+          Browser storage is unavailable. Your existing server catalog is still available; new
+          browser files cannot be restored.
         </div>
       </Show>
       <div {...stylex.attrs(lib.gridHeader)}>

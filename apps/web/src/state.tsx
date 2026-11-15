@@ -3,23 +3,42 @@ import {
   createEffect,
   createMemo,
   createSignal,
+  untrack,
   onCleanup,
   type JSX,
   useContext,
 } from 'solid-js';
 import { createStore, reconcile } from 'solid-js/store';
 import { createQuery } from '@tanstack/solid-query';
-import { demoAssets, initialCollections, type Asset, type Collection } from './data';
+import { initialCollections, type Asset, type Collection } from './data';
 import { loadFiles, readLocal, saveFile, writeLocal } from './storage';
 import { api, API_BASE } from './api';
 import type { MediaAsset } from '@z-cloud/contracts';
 
 function createStudio() {
   const [assets, setAssets] = createStore<Asset[]>([]);
+  const legacyCollections: Record<string, { name: string; description: string }> = {
+    alpine: {
+      name: 'Alpine escape',
+      description: 'A little further from everything. Five days in the Italian Alps.',
+    },
+    wild: {
+      name: 'Into the wild',
+      description: 'Small discoveries, somewhere off the beaten path.',
+    },
+    light: { name: 'Chasing light', description: 'The moments between golden hour and blue.' },
+  };
+  const savedMetadata = readLocal<Record<string, Partial<Asset>>>('metadata', {});
   const [collections, setCollections] = createStore<Collection[]>(
-    readLocal('collections', initialCollections),
+    readLocal<Collection[]>('collections', initialCollections).filter((c) => {
+      const seed = legacyCollections[c.id];
+      const hasRealMedia = Object.values(savedMetadata).some(
+        (a) => a.demo === false && a.collection === c.id,
+      );
+      return !seed || seed.name !== c.name || seed.description !== c.description || hasRealMedia;
+    }),
   );
-  const [selected, setSelected] = createSignal<string[]>(['demo-1']);
+  const [selected, setSelected] = createSignal<string[]>([]);
   const [theme, setTheme] = createSignal<'dark' | 'light'>(readLocal('theme', 'dark'));
   const [direction, setDirection] = createSignal<'ltr' | 'rtl'>(readLocal('direction', 'ltr'));
   const [compact, setCompact] = createSignal(readLocal('compact', false));
@@ -41,8 +60,16 @@ function createStudio() {
   createEffect(() => {
     if (!files.isPending && !hydrated()) {
       const patches = readLocal<Record<string, Partial<Asset>>>('metadata', {});
-      const originals = [...demoAssets, ...(files.data ?? [])];
+      const originals = (files.data ?? []).filter((a) => !a.demo);
+      for (const [id, patch] of Object.entries(patches))
+        if (patch.demo || /^demo-\d+$/.test(id)) delete patches[id];
+      try {
+        writeLocal('metadata', patches);
+      } catch {
+        notify('Browser metadata could not be saved.');
+      }
       setAssets(reconcile(originals.map((a) => ({ ...a, ...patches[a.id], src: a.src }))));
+      if (originals[0]) setSelected([originals[0].id]);
       setHydrated(true);
     }
   });
@@ -103,31 +130,46 @@ function createStudio() {
   }));
   createEffect(() => {
     if (!hydrated() || !serverMedia.data) return;
-    for (const remote of serverMedia.data.data.filter((item) => item.source === 'upload')) {
-      if (assets.some((asset) => asset.id === remote.id)) continue;
-      const patches = readLocal<Record<string, Partial<Asset>>>('metadata', {});
-      acceptImportedAsset({
-        id: remote.id,
-        title: remote.title,
-        filename: remote.filename,
-        type: remote.type,
-        src: `${API_BASE}/v1/media/${remote.id}/content`,
-        size: remote.size,
-        date: remote.capturedAt.slice(0, 10),
-        location: remote.location,
-        collection: remote.collectionId ?? '',
-        tags: remote.tags,
-        description: remote.description,
-        favorite: remote.favorite,
-        demo: false,
-        memory: '',
-        draft: '',
-        mime: remote.mime,
-        customMetadata: remote.customMetadata,
-        ...patches[remote.id],
-        serverId: remote.id,
-      });
-    }
+    const data = serverMedia.data.data;
+    untrack(() => {
+      for (const remote of data.filter((item) => item.source === 'upload')) {
+        const existing = assets.find((asset) => asset.id === remote.id);
+        const patches = readLocal<Record<string, Partial<Asset>>>('metadata', {});
+        acceptImportedAsset({
+          id: remote.id,
+          title: remote.title,
+          filename: remote.filename,
+          type: remote.type,
+          src:
+            existing?.src ||
+            (remote.source === 'upload' ? `${API_BASE}/v1/media/${remote.id}/content` : ''),
+          size: remote.size,
+          date: remote.capturedAt.slice(0, 10),
+          location: remote.location,
+          collection: remote.collectionId ?? '',
+          tags: remote.tags,
+          description: remote.description,
+          favorite: remote.favorite,
+          demo: false,
+          mime: remote.mime,
+          customMetadata: remote.customMetadata,
+          memory: existing?.memory ?? patches[remote.id]?.memory ?? '',
+          draft: existing?.draft ?? patches[remote.id]?.draft ?? '',
+          serverId: remote.id,
+        });
+        if (!selected().length) setSelected([remote.id]);
+        if (
+          remote.collectionId &&
+          remote.collectionName &&
+          !collections.some((c) => c.id === remote.collectionId)
+        )
+          setCollections(collections.length, {
+            id: remote.collectionId,
+            name: remote.collectionName,
+            description: '',
+          });
+      }
+    });
   });
   function select(id: string, multiple = false) {
     setSelected((previous) =>
@@ -257,6 +299,7 @@ function createStudio() {
     addCollection,
     exportMetadata,
     files,
+    refreshMedia: () => serverMedia.refetch(),
   };
 }
 type Studio = ReturnType<typeof createStudio>;

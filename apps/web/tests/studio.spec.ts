@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { installLibraryFixtures } from './library-fixtures';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/v1/media', (route) => route.fulfill({ json: { data: [] } }));
-  await page.route('**/api/v1/uploads', (route) => route.fulfill({ json: { data: [] } }));
+  await installLibraryFixtures(page);
   await page.goto('/');
   await expect(page.getByTestId('media-card')).toHaveCount(12);
 });
@@ -54,6 +54,8 @@ test('real file imports persist with their blobs after reload', async ({ page })
   await page.getByRole('combobox', { name: 'Upload destination' }).selectOption('local');
   await page.getByRole('checkbox', { name: 'Start uploading after adding to queue' }).uncheck();
   await page.getByRole('button', { name: 'Add 1 file to queue', exact: true }).click();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await expect(page).toHaveURL(/\/imports$/);
   await page.goto('/library');
   await expect(page.getByTestId('media-card')).toHaveCount(13);
   await page.reload();

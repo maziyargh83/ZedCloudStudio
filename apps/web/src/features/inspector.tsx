@@ -297,12 +297,11 @@ export function Inspector(props: { onClose: () => void }) {
                     <h3>A little creative company</h3>
                   </div>
                   <p {...stylex.attrs(ins.description)}>
-                    An AI provider hasn’t been connected yet. Your media is never sent to a model
-                    automatically.
+                    Open the AI workspace to draft text with Liara. Your media is never sent to a
+                    model automatically.
                   </p>
-                  <Badge>NOT CONNECTED</Badge>
                   <div {...stylex.attrs(ins.actionRow)}>
-                    <Button disabled>Generate observations</Button>
+                    <a href="/ai">Open AI workspace</a>
                   </div>
                 </Show>
                 <Show when={tab() === 'publish'}>

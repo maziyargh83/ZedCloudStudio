@@ -1,4 +1,12 @@
 import { z } from 'zod';
+export * from './workspace';
+export * from './assistant';
+
+export const aiGenerateSchema = z
+  .object({
+    prompt: z.string().trim().min(1).max(8000),
+  })
+  .strict();
 
 export const mediaTypeSchema = z.enum(['photo', 'video', 'audio']);
 export const customMetadataSchema = z
@@ -36,6 +44,7 @@ export const updateAssetSchema = z
     location: z.string().max(300).optional(),
     collectionId: z.string().max(100).optional(),
     collectionName: z.string().max(100).optional(),
+    capturedAt: z.iso.datetime().optional(),
     customMetadata: customMetadataSchema.optional(),
   })
   .strict()

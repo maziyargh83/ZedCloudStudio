@@ -11,11 +11,16 @@ pnpm install
 pnpm dev
 ```
 
-- Web: http://127.0.0.1:5173
-- API: http://127.0.0.1:8787/health
-- Component showcase: http://127.0.0.1:5173/dev/ui
+- Web: http://127.0.0.1:4878
+- API: http://127.0.0.1:4877/health
+- Component showcase: http://127.0.0.1:4878/dev/ui
+- Production preview: http://127.0.0.1:4879 (`pnpm --filter @z-cloud/web preview` after building)
+
+Z Cloud reserves ports 4877–4882; Gaam keeps 4777/4778. Import tests use an isolated API on 4880. Web and preview ports are strict, so an occupied port causes a clear error instead of silently choosing another one.
 
 The web app uses **SolidJS + Vite**, per the latest frontend decision. Hono serves the API. Shared packages are consumed from TypeScript source; Vite compiles StyleX across package boundaries.
+
+Open [the review inbox](http://127.0.0.1:4878/reviews), [adventure wikis](http://127.0.0.1:4878/adventures) or [travel atlas](http://127.0.0.1:4878/map). The product starts without demo content. [Travel/review workflow details and boundaries](docs/TRAVEL_WORKFLOWS.md).
 
 ## What works
 
@@ -29,9 +34,9 @@ The web app uses **SolidJS + Vite**, per the latest frontend decision. Hono serv
 - Managed import queue with per-file/batch metadata, custom fields, destination selection, pause/resume/retry/cancel, real progress and server-side S3 multipart delivery.
 - Storage server list, encrypted credentials, connection checks and bucket selection. Parspack is configured on this installation.
 
-**Current boundary:** files imported through the managed queue are uploaded to the chosen destination and registered in the shared API/MCP catalog. Browser originals remain cached. Existing browser-only files, memories, drafts and demo fixtures are not automatically migrated. Without `DATABASE_URL`, the API and MCP share `.data/library.json`; with it, both use PostgreSQL. AI providers, YouTube publishing and third-party extension isolation remain unconfigured.
+**Current boundary:** files imported through the managed queue are uploaded to the chosen destination and registered in the shared API/MCP catalog. Browser originals remain cached. Existing browser-only files, memories, drafts and demo fixtures are not automatically migrated. Without `DATABASE_URL`, the API and MCP share `.data/library.json`; with it, both use PostgreSQL. The [AI workspace](http://127.0.0.1:4878/ai) generates text through server-configured Liara; [setup and boundaries](docs/AI.md). Vector retrieval, YouTube publishing and third-party extension isolation remain unconfigured.
 
-Open [the import queue](http://127.0.0.1:5173/imports) or [storage servers](http://127.0.0.1:5173/servers). See [managed uploads](docs/UPLOADS.md) for persistence, controls and current boundaries.
+Open [the import queue](http://127.0.0.1:4878/imports) or [storage servers](http://127.0.0.1:4878/servers). See [managed uploads](docs/UPLOADS.md) for persistence, controls and current boundaries.
 
 ## MCP for Codex and Claude
 

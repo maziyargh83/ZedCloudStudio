@@ -6,14 +6,14 @@ export default defineConfig({
   timeout: 90000,
   expect: { timeout: 10000 },
   use: {
-    baseURL: 'http://127.0.0.1:5173',
+    baseURL: 'http://127.0.0.1:4878',
     channel: 'chrome',
     viewport: { width: 1440, height: 900 },
     trace: 'retain-on-failure',
   },
   webServer: {
     command: 'pnpm dev',
-    url: 'http://127.0.0.1:5173',
+    url: 'http://127.0.0.1:4878',
     reuseExistingServer: !process.env.CI,
   },
 });

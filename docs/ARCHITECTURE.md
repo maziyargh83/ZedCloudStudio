@@ -16,7 +16,7 @@ packages/
   extension-sdk/       Manifest validation and activation contract
   extension-runtime/   Registry, activation, cleanup, events
   storage/             Browser persistence and storage-adapter interfaces
-  ai/                  Injected gateway and retrieval interfaces
+  ai/                  Liara text gateway and retrieval interfaces
 extensions/
   adventure-journal/
   media-library/
@@ -64,9 +64,11 @@ pnpm links workspace packages. Turbo orders dependencies. Shared source packages
 2. A transactional browser-to-API sync protocol with stable IDs and conflict handling.
 3. Import manifest ingestion, thumbnails and file availability tracking.
 4. Extension-contributed routes/commands and capability enforcement.
-5. Explicitly connected AI retrieval/provider adapters and cancellable jobs.
+5. Vector retrieval, media AI adapters and durable AI jobs (Liara text generation is connected; see `AI.md`).
 6. YouTube OAuth, credential storage, resumable uploads and durable job state in the publishing worker.
 
 ## Managed uploads
 
 The API owns a persistent upload queue and encrypted S3 server registry. Browser chunks, SHA-256 receipts, S3 multipart IDs/parts and catalog registration are checkpointed. The web exposes `/imports` and `/servers`; see `UPLOADS.md` for the end-to-end workflow, controls, routes and verification.
+
+Trip and review workflows use `packages/db/src/workspace.ts` to store versioned documents under the configured storage root. This store remains local when the media catalog uses PostgreSQL. `packages/core/src/reviews.ts` defines deterministic missing-field rules; review answers are applied through atomic repository compare-and-update. Trip edits carry optimistic revisions. Leaflet draws only supplied GPX/journal coordinates; planned and recorded tracks remain typed separately. Details: `TRAVEL_WORKFLOWS.md`.

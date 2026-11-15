@@ -11,6 +11,7 @@
     "@z-cloud/contracts": "workspace:*"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./workspace-operations":"./src/workspace-operations.ts"
   }
 }

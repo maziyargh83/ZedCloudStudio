@@ -1,5 +1,9 @@
 # Initial studio milestone — 2026-11-15
 
+Travel/review follow-up: all bundled demo photos and seeded content are removed from the product. `/reviews` now provides durable question/answer drafts with explicit preview/apply and stale-edit protection. `/adventures`, trip detail wikis, `/planner` and `/map` add dated logs, editable challenges/plans, packing lists and weights, explicit media links, date-gap recall prompts, GPX import/export, planned waypoints, a filtered cross-trip atlas, Markdown wiki export and Liara travelogue drafts. The real existing upload was preserved and its review questions were generated/validated with Liara, with labeled rule fallbacks. Trips/reviews persist in the locked local workspace store even when media uses PostgreSQL. See `TRAVEL_WORKFLOWS.md` for capabilities, limits and next ideas.
+
+Liara follow-up: `/ai` now supports explicit text generation with server-only credentials, cancellation, bounded requests and honest failures. A real authenticated model listing and text completion were verified. Follow-up checks passed: monorepo typecheck/build, 16 backend/package tests and 12 browser tests. The initial studio baseline below remains historical; see `AI.md` for current AI boundaries.
+
 MCP follow-up: `apps/mcp` adds the 19th workspace package, 8 tools and a guide resource. Codex, Claude Code and Claude Desktop are configured. API/MCP now share a persistent local catalog by default; the initial verification table below records the earlier studio baseline. Current MCP details and verification are in `MCP.md`.
 
 Managed-import follow-up: the new `/imports` and `/servers` screens support per-file/batch metadata, custom fields, persistent chunked uploads and real S3 multipart delivery. The supplied Parspack destination and discovered bucket were configured and verified with a temporary round-trip test. See `UPLOADS.md`; the initial baseline limitations below are historical where superseded.
@@ -51,7 +55,7 @@ The production web output is approximately 489 KB JavaScript / 154 KB gzip and 1
 - The schema currently covers backend media metadata. Database-backed collections, notes, publication jobs and workspace identity are next slices.
 - The file indexer writes manifests; manifest ingestion and filesystem availability tracking are not integrated into the UI.
 - Extension manifests and lifecycle work, but app routes remain core routes. Dynamic contribution slots, capability enforcement and third-party isolation are future work.
-- AI gateway/retrieval contracts are present; no provider or vector backend is integrated.
+- Liara text generation is available in `/ai` through the server-only gateway. No vector backend, automatic media analysis or RAG is integrated. See `AI.md`.
 - YouTube OAuth, resumable uploads, scheduling, durable job state and publishing are not implemented. The worker returns an unconfigured response and has not been deployed.
 - Localization is not complete. The shell is English with RTL layout support. Mobile control target sizes and a broader component inventory should be refined in later milestones.
 

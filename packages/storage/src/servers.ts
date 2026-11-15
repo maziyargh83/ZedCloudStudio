@@ -30,7 +30,7 @@ export const localServer: StorageServer = {
   id: 'local',
   kind: 'local',
   name: 'This server',
-  endpoint: 'http://127.0.0.1:8787',
+  endpoint: 'http://127.0.0.1:4877',
   region: 'local',
   bucket: '',
   prefix: '',

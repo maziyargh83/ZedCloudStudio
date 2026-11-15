@@ -8,7 +8,7 @@ The initial working screen is the Media Library: workspace navigation, a media-f
 
 The sidebar contains workspace destinations, collections and quick access. Its lower region holds settings and truthful local storage information. The status bar reports local readiness; it must never pretend cloud sync is active.
 
-The inspector provides Details, Memories, AI and Publish. Metadata, tags, collection membership, memories and captions are editable. AI and remote publishing are visibly unconfigured.
+The inspector provides Details, Memories, AI and Publish. Metadata, tags, collection membership, memories and captions are editable. The AI tab links to explicit text generation in the AI workspace, which reports server configuration and real errors. Remote publishing remains visibly unconfigured.
 
 Support desktop, laptop, tablet and mobile without horizontal page scrolling. On small viewports the sidebar is a dismissible overlay and the inspector becomes an overlay or full-width sheet. Keep media browsing and editing available.
 

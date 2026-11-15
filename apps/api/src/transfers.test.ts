@@ -64,7 +64,7 @@ test('HTTP upload queue saves real bytes and custom metadata; range previews and
   const app = createApp(repository, 'memory', new EventBus(), manager);
   const id = randomUUID();
   const bytes = Buffer.from('original-image-bytes');
-  const headers = { 'Content-Type': 'application/json', Origin: 'http://127.0.0.1:4173' };
+  const headers = { 'Content-Type': 'application/json', Origin: 'http://127.0.0.1:4879' };
   try {
     const created = await app.request('/v1/uploads', {
       method: 'POST',

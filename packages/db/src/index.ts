@@ -41,6 +41,28 @@ export function createDatabase(url: string) {
         const [row] = await db.update(assets).set(patch).where(eq(assets.id, id)).returning();
         return row && normalize(row);
       },
+      async compareAndUpdate(id: string, expected: AssetPatch, patch: AssetPatch) {
+        return db.transaction(async (tx) => {
+          const [row] = await tx.select().from(assets).where(eq(assets.id, id)).for('update');
+          if (!row) return undefined;
+          const current = normalize(row);
+          if (
+            Object.entries(expected).some(
+              ([k, v]) => JSON.stringify(current[k as keyof MediaAsset]) !== JSON.stringify(v),
+            )
+          )
+            return undefined;
+          const [updated] = await tx.update(assets).set(patch).where(eq(assets.id, id)).returning();
+          return normalize(updated);
+        });
+      },
+      async removeDemos() {
+        const rows = await db
+          .delete(assets)
+          .where(eq(assets.source, 'demo'))
+          .returning({ id: assets.id });
+        return rows.length;
+      },
     },
     close: () => client.end(),
   };

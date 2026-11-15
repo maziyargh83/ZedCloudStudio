@@ -9,6 +9,9 @@ import { EventBus, type MediaRepository } from '@z-cloud/core';
 import type { MediaAsset } from '@z-cloud/contracts';
 import type { UploadManager } from '@z-cloud/storage/uploads';
 import { transferRoutes } from './transfers';
+import { aiRoutes, type AIService } from './ai';
+import { workspaceRoutes } from './workspace';
+import type { WorkspaceStore } from '@z-cloud/db/workspace';
 
 export function memoryRepository(): MediaRepository {
   const data = new Map<string, MediaAsset>();
@@ -33,6 +36,19 @@ export function memoryRepository(): MediaRepository {
       data.set(id, next);
       return next;
     },
+    async compareAndUpdate(id, expected, patch) {
+      const asset = data.get(id);
+      if (
+        !asset ||
+        Object.entries(expected).some(
+          ([k, v]) => JSON.stringify(asset[k as keyof MediaAsset]) !== JSON.stringify(v),
+        )
+      )
+        return undefined;
+      const next = { ...asset, ...patch };
+      data.set(id, next);
+      return next;
+    },
   };
 }
 /** Local, single-user API. Bind to loopback until authentication is implemented. */
@@ -42,13 +58,16 @@ export function createApp(
   events = new EventBus(),
   uploads?: UploadManager,
   origins = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-    'http://127.0.0.1:4173',
-    'http://localhost:4173',
-    'http://127.0.0.1:4174',
-    'http://localhost:4174',
+    'http://127.0.0.1:4878',
+    'http://localhost:4878',
+    'http://127.0.0.1:4879',
+    'http://localhost:4879',
+    'http://127.0.0.1:4881',
+    'http://localhost:4881',
   ],
+  ai?: AIService,
+  workspace?: WorkspaceStore,
+  assistant?:Hono,
 ) {
   const app = new Hono();
   app.use('*', cors({ origin: origins }));
@@ -68,6 +87,9 @@ export function createApp(
     c.json({ status: 'ok', service: 'z-cloud-api', mode, persistent: mode !== 'memory' }),
   );
   if (uploads) app.route('/v1', transferRoutes(uploads, repository));
+  app.route('/v1/ai', aiRoutes(ai));
+  if (workspace) app.route('/v1', workspaceRoutes(workspace, repository, ai, events));
+  if(assistant)app.route('/v1',assistant);
   app.get('/v1/media', async (c) => c.json({ data: await repository.list() }));
   app.use('/v1/media/:id', async (c, next) => {
     if (!assetSchema.shape.id.safeParse(c.req.param('id')).success)
@@ -94,7 +116,7 @@ export function createApp(
     return c.json({ data: asset });
   });
   app.onError((err, c) => {
-    if (err instanceof HTTPException) return err.getResponse();
+    if (err instanceof HTTPException) return c.json({ error: err.message }, err.status);
     if (err instanceof StorageError) return c.json({ error: err.message }, err.status as 400);
     if (err instanceof ZodError)
       return c.json({ error: 'Check the supplied fields.', issues: err.issues }, 400);

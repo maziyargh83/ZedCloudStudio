@@ -1,9 +1,15 @@
 import type { AssetPatch, CreateAsset, MediaAsset } from '@z-cloud/contracts';
+export * from './reviews';
 export interface MediaRepository {
   list(): Promise<MediaAsset[]>;
   find(id: string): Promise<MediaAsset | undefined>;
   create(input: CreateAsset, id?: string): Promise<MediaAsset>;
   update(id: string, patch: AssetPatch): Promise<MediaAsset | undefined>;
+  compareAndUpdate?(
+    id: string,
+    expected: AssetPatch,
+    patch: AssetPatch,
+  ): Promise<MediaAsset | undefined>;
 }
 export type DomainEvents = {
   'media.imported': { asset: MediaAsset };

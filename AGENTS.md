@@ -12,8 +12,8 @@ Before UI changes, read `docs/design/VISUAL_DIRECTION.md`, `docs/design/DESIGN_S
 - Read `docs/UPLOADS.md` before upload changes. Preserve chunk/hash validation, stable IDs, S3 multipart checkpoints, original files and credential encryption. Never return saved S3 credentials to a browser or log them.
 - API and MCP share a durable catalog: PostgreSQL when configured, otherwise `.data/library.json`. Preserve cross-process locking, atomic replacement, and fail-closed handling of corrupt data.
 - MCP runs over stdio: stdout is reserved for protocol messages. Logs go to stderr. Keep its guide explicit that browser IndexedDB is not synchronized. Test actual protocol discovery and independently spawned clients after transport changes.
-- Keep demo assets labeled. Do not fabricate AI responses, job progress, publications, analytics, or connected accounts.
-- AI and YouTube integrations are foundations only. Cloudflare is reserved for YouTube publishing. No FFmpeg/transcoding.
+- Do not seed demo assets or sample collections into the product. Test fixtures belong only under tests. Trip/review documents use the locked, atomic workspace store; keep PATCH defaults stripped and preserve original GPX segments/timestamps. Do not fabricate AI responses, job progress, publications, analytics, or connected accounts.
+- The AI workspace uses server-only Liara credentials from the ignored root `.env`. The user's explicit review-question and travelogue actions may send the described text metadata/notes to Liara. Background scans remain local; never send originals automatically. Do not expose credentials or upstream error bodies. Vector retrieval and YouTube integrations remain foundations only. Cloudflare is reserved for YouTube publishing. No FFmpeg/transcoding.
 - Extension manifests declare capabilities; they do not provide sandboxing or permission enforcement.
 - Run relevant checks: `pnpm typecheck`, `pnpm build`, `pnpm test`, `pnpm test:e2e`. Inspect screenshots for major UI work.
 - Do not reset user data or overwrite local originals. The importer must remain read-only and skip symlinks.

@@ -14,6 +14,8 @@ export interface AIGateway {
 export interface RetrievalAdapter {
   search(query: string, limit: number): Promise<SourceReference[]>;
 }
+export { LiaraGateway, AIProviderError, type LiaraOptions } from './liara';
+export type {ChatTool,ChatMessage,ChatToolCall,ToolChatGateway} from './chat';
 /** The provider is intentionally injected; no canned responses or implicit API calls. */
 export async function* generateWithSources(
   gateway: AIGateway,

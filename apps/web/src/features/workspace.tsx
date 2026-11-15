@@ -43,6 +43,7 @@ import { formatBytes, formatDate, type Asset } from '../data';
 import { openImport } from '../shell';
 import { lib, MediaCard } from './library';
 import { readLocal, writeLocal } from '../storage';
+import { AIWorkspace } from './ai-workspace';
 
 export function WorkspacePage(props: { notFound?: boolean }) {
   const s = useStudio();
@@ -132,11 +133,13 @@ export function WorkspacePage(props: { notFound?: boolean }) {
               <ArrowRight size={14} />
             </Button>
           </div>
-          <img
-            src={s.assets[0]?.src}
-            alt="A moment from the sample collection"
-            {...stylex.attrs(ws.welcomeImage)}
-          />
+          <Show when={s.assets[0]}>
+            <img
+              src={s.assets[0]?.src}
+              alt={s.assets[0]?.title ?? 'Your media'}
+              {...stylex.attrs(ws.welcomeImage)}
+            />
+          </Show>
         </section>
         <div {...stylex.attrs(ws.sectionHeading)}>
           <h2>Pick up a collection</h2>
@@ -221,35 +224,7 @@ export function WorkspacePage(props: { notFound?: boolean }) {
         </Show>
       </Show>
       <Show when={path() === '/ai'}>
-        <section {...stylex.attrs(ws.aiPanel)}>
-          <span {...stylex.attrs(ws.largeIcon)}>
-            <Sparkles size={30} />
-          </span>
-          <Badge>PROVIDER NOT CONNECTED</Badge>
-          <h2 {...stylex.attrs(ws.editorialHeading)}>
-            Your stories.
-            <br />A fresh perspective.
-          </h2>
-          <p {...stylex.attrs(ws.copy)}>
-            Find connections, revisit an adventure, or shape a first draft. The AI gateway and
-            retrieval interfaces are in place; a provider still needs to be integrated.
-          </p>
-          <div {...stylex.attrs(ws.aiPrompt)}>
-            <Textarea
-              aria-label="AI prompt"
-              disabled
-              placeholder="Ask about a moment, a place, or an idea…"
-            />
-            <Button variant="primary" disabled>
-              <Sparkles size={13} />
-              Send
-            </Button>
-          </div>
-          <span {...stylex.attrs(ws.privacy)}>
-            <ShieldCheck size={13} />
-            No media is sent to an AI provider.
-          </span>
-        </section>
+        <AIWorkspace />
       </Show>
       <Show when={path() === '/planner' || path() === '/publications'}>
         <div {...stylex.attrs(ws.infoStrip)}>

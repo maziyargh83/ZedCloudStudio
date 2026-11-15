@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 let root: string;
 let child: ChildProcess;
-const base = 'http://127.0.0.1:8789';
+const base = 'http://127.0.0.1:4880';
 const png = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aBw8AAAAASUVORK5CYII=',
   'base64',
@@ -19,7 +19,7 @@ test.beforeAll(async () => {
       DATABASE_URL: '',
       ZCLOUD_DATA_FILE: join(root, 'library.json'),
       ZCLOUD_STORAGE_ROOT: root,
-      PORT: '8789',
+      PORT: '4880',
     },
     stdio: 'pipe',
   });

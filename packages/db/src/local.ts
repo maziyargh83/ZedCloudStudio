@@ -76,5 +76,27 @@ export function createLocalRepository(filename: string) {
         return asset;
       });
     },
+    async compareAndUpdate(id: string, expected: AssetPatch, patch: AssetPatch) {
+      const validated = updateAssetSchema.parse(patch);
+      return mutate((library) => {
+        const asset = library.assets.find((a) => a.id === id);
+        if (
+          !asset ||
+          Object.entries(expected).some(
+            ([k, v]) => JSON.stringify(asset[k as keyof typeof asset]) !== JSON.stringify(v),
+          )
+        )
+          return undefined;
+        Object.assign(asset, validated);
+        return asset;
+      });
+    },
+    async removeDemos() {
+      return mutate((library) => {
+        const count = library.assets.length;
+        library.assets = library.assets.filter((a) => a.source !== 'demo');
+        return count - library.assets.length;
+      });
+    },
   };
 }
